@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { test, expect } = require('@playwright/test');
 
 test('check login page loads', async ({ page }) => {
@@ -6,9 +7,18 @@ test('check login page loads', async ({ page }) => {
 });
 
 test('try invalid login', async ({ page }) => {
-    await page.goto('/login');
-    await page.locator('#username').fill('wronguser');
-    await page.locator('#password').fill('wrongpass');
-    await page.locator('button[type="submit"]').click();
-    await expect(page.locator('.flash.error')).toBeVisible();
-  });
+  await page.goto('/login');
+  await page.locator('#username').fill('wronguser');
+  await page.locator('#password').fill('wrongpass');
+  await page.locator('button[type="submit"]').click();
+  await expect(page.locator('.flash.error')).toBeVisible();
+});
+
+test('successful login', async ({ page }) => {
+  await page.goto('/login');
+  await page.locator('#username').fill(process.env.LOGIN_USER);
+  await page.locator('#password').fill(process.env.LOGIN_PASS);
+  await page.locator('button[type="submit"]').click();
+  await expect(page.locator('.flash.success')).toBeVisible();
+  await expect(page).toHaveURL(/secure/);
+});
