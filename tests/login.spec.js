@@ -1,6 +1,13 @@
 require('dotenv').config();
 const { test, expect } = require('@playwright/test');
 
+async function login(page) {
+  await page.goto('/login');
+  await page.locator('#username').fill(process.env.LOGIN_USER);
+  await page.locator('#password').fill(process.env.LOGIN_PASS);
+  await page.locator('button[type="submit"]').click();
+}
+
 test('check login page loads', async ({ page }) => {
   await page.goto('/login');
   await expect(page.locator('h2')).toHaveText('Login Page');
