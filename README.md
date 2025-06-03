@@ -9,5 +9,5 @@ This repo includes automated login tests using Playwright against the demo site 
 
 ### Credentials
 
-Valid credentials are loaded from a `.env` file for best practice
+Valid credentials are loaded from a `.env` file
 
