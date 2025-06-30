@@ -1,5 +1,7 @@
 require('dotenv').config();
 const { test, expect } = require('@playwright/test');
+const { LoginPage } = require('./pages/loginPage');
+
 
 async function login(page) {
   await page.goto('/login');
@@ -21,9 +23,11 @@ test('invalid login shows error message', async ({ page }) => {
 });
 
 test('valid login succeeds and redirects', async ({ page }) => {
-  await login(page); // using helper
+  const loginPage = new LoginPage(page);
+  await loginPage.goto();
+  await loginPage.login(process.env.LOGIN_USER, process.env.LOGIN_PASS);
 
-  await expect(page.locator('#flash')).toContainText('You logged into a secure area!');
+  await expect(loginPage.flashMessage).toContainText('You logged into a secure area!');
   await expect(page).toHaveURL(/secure/);
 });
 
