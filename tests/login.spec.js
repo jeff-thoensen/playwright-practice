@@ -34,3 +34,14 @@ test('logout after successful login', async ({ page }) => {
   await expect(page).toHaveURL(/login/);
   await expect(page.locator('h2')).toHaveText('Login Page');
 });
+
+test('file upload works', async ({ page }) => {
+  await page.goto('/upload');
+
+  await page.setInputFiles('#file-upload', 'tests/test-files/example.txt');
+
+  await page.locator('input[type="submit"]').click();
+
+  await expect(page.locator('#uploaded-files')).toHaveText('example.txt');
+});
+
